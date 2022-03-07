@@ -7,11 +7,12 @@ from PIL import Image, ImageOps
 from matplotlib import pyplot as plt
 
 
-clothes_dir = './cloth'
-clothes_mask_dir = './cloth-mask'
-image_dir = './image'
-image_parse_dir = './image-parse'
-result_dir = './result'
+
+clothes_dir = '/home/ssai1/dhgwag/VITON/VITON-HD/datasets/train/cloth'
+clothes_mask_dir = '/home/ssai1/dhgwag/VITON/VITON-HD/datasets/train/cloth-mask'
+image_dir = '/home/ssai1/dhgwag/VITON/VITON-HD/datasets/train/image'
+image_parse_dir = '/home/ssai1/dhgwag/VITON/VITON-HD/datasets/train/image-parse'
+result_dir = '/home/ssai1/yjcho/blackened_datasets'
 
 
 def load_one_image(image_path):
@@ -33,12 +34,12 @@ def get_parse_clothes(img_parse):
     """
     img_parse: numpy array
     """
-    print(np.unique(img_parse))
+    # print(np.unique(img_parse))
     parse_upper = ((img_parse == 5).astype(np.float32) +
                    (img_parse == 6).astype(np.float32) +
                    (img_parse == 7).astype(np.float32))
 
-    print("parse_cloth's elements:", np.unique(parse_upper))
+    # print("parse_cloth's elements:", np.unique(parse_upper))
 
     return parse_upper
 
@@ -51,9 +52,9 @@ def parse2mask(parse):
 
 
 def clothes_darkenizer(img, mask):
-    print("mask", mask.shape)
+    # print("mask", mask.shape)
     np_clothes = np.copy(img)
-    print(type(np_clothes), np_clothes.shape)
+    # print(type(np_clothes), np_clothes.shape)
     np_clothes[np.where(mask == 0.0)] = 0.0 # only clothes will survive
 
 
@@ -113,8 +114,8 @@ def main():
         PIL_result_img.save(os.path.join(result_image_dir, os.path.basename(img_path)))
         Image.fromarray(img_parse).save(os.path.join(result_image_parse_dir, os.path.basename(img_parse_path)))
 
-        plt.imshow(np.array(result_img))
-        plt.show()
+        # plt.imshow(np.array(result_img))
+        # plt.show()
 
     # clothes image processing
     for clothes_path in glob.glob(os.path.join(clothes_dir, '*.jpg')):
@@ -130,8 +131,8 @@ def main():
         PIL_result_img.save(os.path.join(result_cloth_dir, os.path.basename(clothes_path)))
         Image.fromarray(clothes_mask).save(os.path.join(result_cloth_mask_dir, os.path.basename(clothes_mask_path)))
 
-        plt.imshow(np.array(result_img))
-        plt.show()
+        # plt.imshow(np.array(result_img))
+        # plt.show()
 
 if __name__ == '__main__':
     main()
